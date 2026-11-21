@@ -1,0 +1,7 @@
+PASS: exhaustive batch enumeration and symmetric per-type rates in 1840 histogram/model cases.
+PASS: exact finite differences, global phase rates, and sparse clock bounds in 386 cases.
+PASS: 74 exact mean/variance comparisons, deterministic full-choice cases, and holding identities.
+PASS: amplitude integrals agree numerically with a_1=1, a_2=2, a_3=sqrt(3) exp(pi/(2sqrt(3))).
+BENCHMARK: m=1, n=200000, g=1: mean shift 0.577218165 (limit 0.577215665); scaled variance 1.644865150.
+BENCHMARK: m=1, n=200000, g=2: mean shift 1.270335404 (limit 1.270362845); scaled variance 1.644855960.
+BENCHMARK: m=1, n=200000, g=3: mean shift 2.033365294 (limit 2.033421491); scaled variance 1.644846420.

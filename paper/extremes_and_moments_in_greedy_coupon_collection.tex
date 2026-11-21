@@ -1,0 +1,710 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Extremes and Moments in Greedy Coupon Collection},pdfauthor={Christopher D. Long}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Pbb}{\mathbb P}
+\newcommand{\Ebb}{\mathbb E}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Fcal}{\mathcal F}
+\newcommand{\Rbb}{\mathbb R}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\title{Extremes and Moments in Greedy Coupon Collection}
+\author{Christopher D. Long}
+\date{}
+\begin{document}
+\maketitle
+\begin{abstract}
+A collector is offered a uniformly sampled batch of coupon types and keeps a
+least-collected type. For every fixed number of required copies, we prove a
+Poisson limit for the centered completion times of individual types, joint
+limits for the last completion times, and convergence of all their fixed
+absolute and mixed polynomial moments. In particular, we identify the linear
+term in the mean and the leading variance. The proof couples the remaining
+collection times, after a fixed fluid time, to independent gamma variables;
+the common clock error is bounded in every fixed $L^p$ norm by the fraction
+of unfinished types. This avoids estimates on a growing fluid-time interval.
+The same argument covers sampling with or without replacement, bounded random
+batch sizes, and an additional independent holding probability that may tend
+to one.
+\end{abstract}
+
+\section{Model and results}
+There are $n$ types, initially with zero copies. Fix an integer $m\ge1$.
+At each trial draw an independent batch size $J$ with a fixed law $\nu$ on
+$\{0,\ldots,d\}$, where $d<\infty$ and
+\[
+ \mu=\Ebb J>0,\qquad p_+=\Pbb(J>0)>0.
+\]
+Conditional on $J$, sample either a uniform $J$-subset (without replacement)
+or $J$ independent uniform types (with replacement). The convention is fixed
+throughout the process. A nonempty batch contributes one copy of a
+least-collected offered type; an empty batch contributes none. Repeated
+offers of one type still contribute at most one copy. Any tie rule using only
+present and past information is allowed. All parameters above are fixed as
+$n\to\infty$; in the subset model take $n\ge d$.
+
+Let $C_{i,n}$ be the trial when type $i$ first has $m$ copies, and write
+\[
+ D_{1,n}>D_{2,n}>\cdots>D_{n,n}
+\]
+for these completion times in decreasing order. In particular, $D_{1,n}$ is
+the time to collect $m$ complete sets. Put
+\begin{equation}\label{eq:constants}
+\begin{gathered}
+ c=m-1,\qquad B_n=\log n+c\log\log n,\qquad
+ f(x)=\frac{1-\Ebb(1-x)^J}{\mu},\\
+ a_\nu=\exp\left\{\int_0^1\left(\frac1{f(x)}-\frac1x\right)\dd x\right\},
+ \qquad \lambda=\frac{a_\nu}{c!}.
+\end{gathered}
+\end{equation}
+The integral is finite: $f(x)=x+O(x^2)$ near zero and $f(x)>0$ on $(0,1]$.
+All logarithms are natural. Let $E_1,E_2,\ldots$ be independent exponential
+variables of rate one and $S_j=E_1+\cdots+E_j$.
+
+\begin{theorem}[Completion extremes and moments]\label{thm:main}
+For either sampling convention, the point measure
+\begin{equation}\label{eq:ppp}
+ \Xi_n=\sum_{i=1}^n\delta_{\mu C_{i,n}/n-B_n}
+ \ \Longrightarrow\ \Xi,
+ \qquad \text{$\Xi$ Poisson with intensity $\lambda e^{-y}\dd y$,}
+\end{equation}
+in the vague topology on locally finite point measures on $\Rbb$.
+For each fixed $r\ge1$,
+\begin{equation}\label{eq:order}
+ (\mu D_{j,n}/n-B_n)_{j=1}^r
+ \ \Longrightarrow\ (\log\lambda-\log S_j)_{j=1}^r.
+\end{equation}
+Every fixed absolute moment of the norm of this vector converges, as does
+every mixed polynomial moment of its coordinates. Consequently,
+\begin{align}
+ \Pbb(\mu D_{1,n}/n-B_n\le y)&\longrightarrow
+       \exp\{-\lambda e^{-y}\},\label{eq:gumbel}\\
+ \Ebb D_{j,n}&=\frac n\mu\bigl(B_n+\log\lambda-\psi(j)+o(1)\bigr),
+       \label{eq:mean}\\
+ \Cov(D_{j,n},D_{k,n})&=\left(\frac n\mu\right)^2
+       \bigl(\psi_1(\max\{j,k\})+o(1)\bigr),\label{eq:cov}
+\end{align}
+where $\psi$ and $\psi_1$ are the digamma and trigamma functions.
+In particular the mean correction for $D_{1,n}$ is
+$\log(a_\nu/c!)+\gamma$ and its variance is
+$(n/\mu)^2(\pi^2/6+o(1))$.
+The consecutive limiting gaps $\log(S_{j+1}/S_j)$, $1\le j<r$, are independent
+exponentials of rates $j$; their mixed polynomial moments also arise as limits.
+\end{theorem}
+
+\begin{corollary}[Fixed batch size: the Xu--Tang model]\label{cor:xt}
+For $J\equiv g\ge1$, $\mu=g$ and
+\begin{equation}\label{eq:ag}
+ a_g=\exp\{-\gamma-\psi(1/g)-\log g\}.
+\end{equation}
+Thus Theorem~\ref{thm:main} applies with $\lambda=a_g/(m-1)!$.
+For example, $a_1=1$, $a_2=2$, and
+$a_3=\sqrt3\exp(\pi/(2\sqrt3))$.
+\end{corollary}
+
+Xu and Tang~\cite{XuTang} studied the distinct-batch model and obtained
+$\Ebb D_{1,n}=(n/g)(\log n+(m-1)\log\log n)+O(mn)$.
+For $g=1$, the limiting law reduces to the classical multiple coupon
+collector law of Erd\H{o}s and R\'enyi~\cite{ErdosRenyi}.
+Point-process versions for this classical model, including multiple copies,
+were proved by Ilienko~\cite{Ilienko}.
+Doumas and Spektor~\cite[Theorems 14, 20, 23]{DoumasSpektor} treat the
+one-copy greedy case $m=1$, including refined mean asymptotics, the variance,
+and a Gumbel limit. Their constant $C_g$ equals $(\log a_g)/g$, so their
+centering agrees exactly with ours when $m=1$.
+Our result treats every fixed $m$, the full process of late completions and
+its moments, and the batch-size and sampling extensions above. We make no
+priority claim for the one-copy mean, distribution or variance, or for the
+classical $g=1$ point-process limit. Group-drawing Poisson limits such as
+those of Schilling and Henze~\cite{SchillingHenze} count all sampled types;
+their retention rule differs from the greedy keep-one rule studied here.
+Fluid methods for coupon-type hitting problems also appear in
+Gast~\cite{Gast}; here the greedy dynamics are interacting, and a comparison
+of their clocks supplies the final passage from fixed-time fluid behavior
+to extinction. The proof below is self-contained apart from standard
+properties of gamma integrals and elementary martingale inequalities,
+whose required estimates are given explicitly.
+
+\section{The histogram chain and a fixed-time fluid limit}
+Poissonize trials at rate $n/\mu$ and use $h$ for this continuous time.
+Loads may be capped at $m$: doing so leaves all counts below $m$, and all
+completion times, unchanged. Let $L_j(h)$ count types with load at most $j$,
+$0\le j\le c$, and set $L_{-1}=0$.
+Define
+\begin{equation}\label{eq:Fn}
+ F_n(k)=\frac n\mu\begin{cases}
+  1-\displaystyle\sum_{\ell=0}^d\nu_\ell
+       \dfrac{\binom{n-k}{\ell}}{\binom n\ell},&\text{without replacement},\\[6pt]
+  1-\displaystyle\sum_{\ell=0}^d\nu_\ell(1-k/n)^\ell,&\text{with replacement}.
+ \end{cases}
+\end{equation}
+Use $\binom a0=1$, including $a=0$.
+A transition that increments a type of load $j<m$ has total rate
+\begin{equation}\label{eq:classrate}
+ F_n(L_j)-F_n(L_{j-1}).
+\end{equation}
+Indeed, a batch must avoid all types of load below $j$ and hit at least one
+of load $j$. This event, and the resulting histogram, do not depend on the
+tie rule. Thus the entire histogram process, including the unlabelled
+completion point process, has the same law for every allowed tie rule.
+We may henceforth break ties uniformly among distinct types of minimum load.
+Every type in a nonempty class of size $N_j=L_j-L_{j-1}$ then has transition rate
+\begin{equation}\label{eq:q}
+ q_j=\frac{F_n(L_j)-F_n(L_{j-1})}{L_j-L_{j-1}}.
+\end{equation}
+
+\begin{lemma}[Rate estimates]\label{lem:rates}
+There is a constant $C$ depending only on $d$ such that, if $K=L_c$,
+\begin{equation}\label{eq:rates}
+ 0\le q_j\le1,\qquad q_j\ge1-CK/n
+ \quad\text{when }K\le n/2\text{ and }n\ge2d.
+\end{equation}
+Moreover $F_n(k)\ge\alpha k$, where $\alpha=p_+/\mu>0$, and uniformly in
+$0\le k\le n$,
+\begin{equation}\label{eq:fluidapprox}
+ F_n(k)/n=f(k/n)+O(1/n).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For a deterministic nonzero batch size $\ell$ in the subset model,
+\[
+ F_n(k+1)-F_n(k)
+ =\frac\ell\mu\frac{\binom{n-k-1}{\ell-1}}{\binom{n-1}{\ell-1}}
+ =\frac\ell\mu\prod_{a=1}^{\ell-1}\left(1-\frac{k}{n-a}\right)
+\]
+whenever $k\le n-\ell$; the binomial formula remains valid for all $k<n$.
+After averaging with weights $\nu_\ell$, these increments are in $[0,1]$.
+For $k<K\le n/2$ and $n\ge2d$, the product is at least
+$1-2(\ell-1)K/n$. In the replacement model the mean value theorem gives
+an increment $(\ell/\mu)(1-\theta/n)^{\ell-1}$ with
+$k<\theta<k+1\le K$, which has the same bounds. Since $q_j$ is an average
+of increments, one may take $C=2d$.
+A nonempty batch hits a set of $k$ types with probability at least $k/n$,
+proving the global lower bound. Finally, the fixed-length product defining
+the hypergeometric avoidance probability differs uniformly from
+$(1-k/n)^\ell$ by $O(1/n)$. For replacement the approximation is exact.
+\end{proof}
+
+Let $v_{-1}=0$ and define the deterministic profile by
+\begin{equation}\label{eq:ode}
+ v_j'=-\{f(v_j)-f(v_{j-1})\},\qquad v_j(0)=1,
+ \qquad 0\le j\le c.
+\end{equation}
+
+\begin{lemma}[Fixed-time concentration and eventual sparsity]\label{lem:fluid}
+For every fixed $b<\infty$ and $\varepsilon>0$, there are positive constants
+$A_{b,\varepsilon},a_{b,\varepsilon}$ such that, for all sufficiently large $n$,
+\begin{equation}\label{eq:concentration}
+ \Pbb\left(\max_{0\le j\le c}\sup_{0\le h\le b}
+       |L_j(h)/n-v_j(h)|>\varepsilon\right)
+ \le A_{b,\varepsilon}e^{-a_{b,\varepsilon}n}.
+\end{equation}
+The solution satisfies $0<v_0(h)\le\cdots\le v_c(h)\le1$, every $v_j$
+is nonincreasing and tends to zero, and
+\begin{equation}\label{eq:v0}
+ e^h v_0(h)\longrightarrow a_\nu.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The polynomial vector field in \eqref{eq:ode} is Lipschitz on the compact
+ordered simplex $0\le v_0\le\cdots\le v_c\le1$ and points inward on its
+boundary. For example, at $v_j=v_{j-1}$ the derivative of their difference
+is $f(v_{j-1})-f(v_{j-2})\ge0$. Hence the solution exists globally in that
+simplex. Since $f$ is strictly increasing on $[0,1]$, each derivative is
+nonpositive. The limits of successive coordinates must agree: if
+$v_j(\infty)>v_{j-1}(\infty)$, its derivative stays strictly negative.
+Starting with $v_{-1}=0$ proves that every limit is zero. Also $f(x)\le x$
+and $v_0'=-f(v_0)$, so $v_0(h)\ge e^{-h}>0$.
+
+For concentration, write each normalized count as its drift integral plus
+a martingale $M_j$. The jumps of $M_j$ have absolute size $1/n$ and its
+predictable quadratic variation up to $b$ is at most $b/(\mu n)$, since the
+trial rate is $n/\mu$. The compensated counting-process exponential
+supermartingale and $e^z-1-z\le z^2/[2(1-|z|/3)]$ for $|z|<3$ give
+\[
+ \Pbb\left(\sup_{h\le b}|M_j(h)|>z\right)
+ \le2\exp\left\{-\frac{nz^2}{2(b/\mu+z/3)}\right\}.
+\]
+For completeness, apply the exponential supermartingale with parameter
+$\theta n$ up to the first crossing of $z$, bound its compensator by
+$n\theta^2b/[2\mu(1-\theta/3)]$, and optimize at
+$\theta=z/(b/\mu+z/3)$; do the same for $-M_j$.
+Equation~\eqref{eq:fluidapprox}, a union bound over the $m$ coordinates,
+and Gronwall's inequality prove \eqref{eq:concentration}.
+
+Finally, separation of variables in $v_0'=-f(v_0)$ gives
+\[
+ h=\int_{v_0(h)}^1\frac{\dd x}{f(x)},\qquad
+ h+\log v_0(h)=\int_{v_0(h)}^1
+       \left(\frac1{f(x)}-\frac1x\right)\dd x.
+\]
+Taking the limit proves \eqref{eq:v0}.
+\end{proof}
+
+\begin{proposition}[All deterministic lower-tail profiles]\label{prop:profiles}
+For every fixed $j\ge0$, the solution of \eqref{eq:ode} satisfies
+\[
+ v_j(h)\sim a_\nu\frac{h^j}{j!}e^{-h}\qquad(h\to\infty).
+\]
+\end{proposition}
+\begin{proof}
+Fix $\rho\in(1/2,1)$. Since $v_j(h)\to0$ and $f(x)=x+O(x^2)$,
+for all sufficiently large $h$,
+$v_j'\le-\rho v_j+v_{j-1}$. Induction and variation of constants give
+$v_j(h)=O((1+h)^j e^{-\rho h})$ for each of the finitely many layers in
+question. Expanding the equation more accurately gives, for $j\ge1$,
+\[
+ (e^h v_j(h))'=e^h v_{j-1}(h)
+       +O\bigl(e^h(v_j(h)^2+v_{j-1}(h)^2)\bigr).
+\]
+The error is integrable because $2\rho>1$. Starting with
+\eqref{eq:v0}, integration and induction therefore give
+$e^h v_j(h)\sim a_\nu h^j/j!$.
+\end{proof}
+
+\section{A simultaneous comparison with independent gamma clocks}
+The following is the main estimate. It concerns all remaining completion
+times, not merely their maximum, and supplies its own moment bounds.
+
+\begin{lemma}[Clock comparison]\label{lem:clock}
+Assume $n\ge2d$ and condition on the state at a deterministic time $b$.
+Suppose exactly $K$
+types are unfinished and $K\le\delta n$, where
+$\delta\le\min\{1/2,1/(2C)\}$ and $C$ is from Lemma~\ref{lem:rates}.
+If type $i$ needs $r_i\in\{1,\ldots,m\}$ more copies, one can construct
+conditionally independent $G_i\sim\operatorname{Gamma}(r_i,1)$ and the
+actual residual completion times $R_i$ so that
+\begin{equation}\label{eq:clockcoupling}
+ G_i\le R_i\le G_i+\Delta\quad\text{for every unfinished }i,
+ \qquad 0\le\Delta\le\frac{2C}{n}\sum_{i=1}^K G_i.
+\end{equation}
+For every fixed $p\ge1$,
+\begin{equation}\label{eq:clockmoment}
+ \bigl(\Ebb[\Delta^p\mid\Fcal_b]\bigr)^{1/p}
+ \le C_{m,d,p}K/n.
+\end{equation}
+For $K=0$, set $\Delta=0$.
+\end{lemma}
+\begin{proof}
+Starting at $b$, use independent unit-rate Poisson processes $Y_i$ for the
+unfinished types. When a type is in class $j$, run its internal clock at
+rate $q_j$. The random time change
+$Y_i(\int_b^{b+t}q_i(h)\dd h)$ constructs the desired finite-state Markov
+chain: its coordinate transition rates are exactly \eqref{eq:q}.
+After type $i$ finishes, set its virtual clock rate to one. The $r_i$th
+arrival time of $Y_i$ is $G_i$; these are independent gamma variables
+conditional on the starting state. Continuity of the internal clocks gives
+\[
+ \int_b^{b+R_i}q_i(h)\dd h=G_i.
+\]
+Let $K(h)=L_c(h)$. It is nonincreasing, and \eqref{eq:rates} gives
+$1/2\le q_i(h)\le1$ while a type is unfinished. Consequently
+$G_i\le R_i\le2G_i$, so all completion times are finite. Define
+\[
+ \Delta=\frac Cn\int_b^\infty K(h)\dd h.
+\]
+For each type, its total lost clock time is at most $\Delta$, whence
+$R_i-G_i\le\Delta$. Moreover, by summing the unfinished indicators,
+\[
+ \int_b^\infty K(h)\dd h=\sum_{i=1}^K R_i
+ \le2\sum_{i=1}^K G_i.
+\]
+This proves \eqref{eq:clockcoupling}. Minkowski's inequality and
+$\norm{\operatorname{Gamma}(r,1)}_p\le
+\norm{\operatorname{Gamma}(m,1)}_p$ for $r\le m$ prove
+\eqref{eq:clockmoment}. Independence is used to identify the ideal clocks;
+the error estimate itself only needs their marginal moment bounds.
+\end{proof}
+
+\begin{remark}
+Keeping only the constant lower rate $1-C\delta$ would introduce an error
+of order $\delta\log n$ at the maximum. The integrated unfinished population
+in \eqref{eq:clockcoupling} instead gives an $L^p$ error of order $\delta$,
+uniformly in $n$. This is what allows a fixed fluid time followed by the
+limits $n\to\infty$ and then $b\to\infty$.
+\end{remark}
+
+\begin{lemma}[Coarse global moments]\label{lem:coarse}
+Let $T_n$ be the full completion time in Poissonized time and $D_{1,n}$ the
+number of trials. For every fixed $p\ge1$,
+\begin{equation}\label{eq:coarse}
+ \Ebb T_n^p=O((\log n)^p),\qquad
+ \Ebb D_{1,n}^p=O((n\log n)^p).
+\end{equation}
+The same bounds hold uniformly over initial states with nonnegative loads.
+\end{lemma}
+\begin{proof}
+Divide collection into at most $m$ phases, the $j$th ending when every type
+has at least $j$ copies. During a phase, if $k$ types remain at the current
+minimum load, this number decreases at continuous rate $F_n(k)\ge\alpha k$.
+Its phase duration is therefore dominated by
+$\sum_{k=1}^n\operatorname{Exp}(\alpha k)$ with independent summands.
+This sum has the distribution of the maximum of $n$ independent
+$\operatorname{Exp}(\alpha)$ variables, whose tail above
+$\alpha^{-1}(\log n+x)$ is at most $e^{-x}$. Conditional domination in each
+phase and the $L^p$ triangle inequality prove the first assertion.
+
+In discrete time the success probability is at least $p_+k/n$.
+A phase is dominated by a classical coupon collector that is activated with
+probability $p_+$ at each trial. After $t$ trials its probability of being
+unfinished is at most $n(1-p_+/n)^t\le ne^{-p_+t/n}$.
+Integrating this tail and summing the $m$ phases proves the second bound.
+Larger starting loads only remove phases or reduce the numbers still at
+the current minimum; the bounds remain valid.
+\end{proof}
+
+\section{Independent gamma extremes, including moments}
+We record the elementary extreme-value calculation with the moment
+estimates needed later. It does not assume independence of the initial
+histogram.
+
+\begin{lemma}[Mixed gamma arrays]\label{lem:gamma}
+Fix $b\ge0$. Given a random initial configuration, let $G_i$ be independent
+conditional on it, with integer shapes $r_i\in\{0,1,\ldots,m\}$ and rate one;
+shape zero means $G_i=0$. Suppose the number $N_m$ of shape-$m$ variables
+satisfies $N_m/n\to v>0$ in probability. Then
+\[
+ \sum_{i=1}^n\delta_{b+G_i-B_n}
+ \Longrightarrow \operatorname{PPP}(\lambda_b e^{-y}\dd y),
+ \qquad \lambda_b=e^b v/c!,
+\]
+and the largest fixed $r$ values converge jointly to
+$(\log\lambda_b-\log S_j)_{j=1}^r$.
+If, except on an event of probability $O(e^{-a n})$ for some $a>0$,
+$N_m\ge\kappa n$ with $\kappa>0$, then these joint limits also hold with
+all fixed absolute and mixed polynomial moments.
+\end{lemma}
+\begin{proof}
+For integer $r\ge1$ and $t\ge0$,
+\begin{equation}\label{eq:gammatail}
+ Q_r(t):=\Pbb(\operatorname{Gamma}(r,1)>t)
+       =e^{-t}\sum_{k=0}^{r-1}\frac{t^k}{k!}.
+\end{equation}
+Thus, for fixed $y$,
+\[
+ n Q_m(B_n-b+y)\longrightarrow e^{b-y}/c!,\qquad
+ n Q_r(B_n-b+y)\longrightarrow0\quad(r<m).
+\]
+The density gives the analogous uniform convergence on compact $y$-intervals.
+For any nonnegative continuous compactly supported $\phi$, condition on the
+shapes and write the Laplace functional as
+\[
+ \prod_{i=1}^n(1-z_{i,n}),\qquad
+ z_{i,n}=\Ebb[1-e^{-\phi(b+G_i-B_n)}\mid(r_i)].
+\]
+Here $\max_i z_{i,n}=O(1/n)$ and
+\[
+ \sum_i z_{i,n}\ \longrightarrow\
+ \lambda_b\int_{\Rbb}(1-e^{-\phi(y)})e^{-y}\dd y
+\]
+in probability. Expanding $\log(1-z)$, then using boundedness of the
+conditional Laplace functional, proves the point-process assertion.
+The same product calculation for finitely many disjoint intervals, including
+$(y,\infty)$, gives independent Poisson counts. Their means identify the joint
+upper order statistics: under $z=\lambda_b e^{-y}$ the limit becomes a
+unit-rate Poisson process on $(0,\infty)$, with successive points $S_j$.
+
+Here are explicit tail bounds for moments. Set $t_n=B_n-b$ and let $Z_{j,n}$
+be the $j$th largest of $b+G_i-B_n$. For large $n$ and $x\ge0$, a union bound
+and \eqref{eq:gammatail} give
+\begin{equation}\label{eq:right}
+ \Pbb(Z_{1,n}>x)\le C_b(1+x)^c e^{-x}.
+\end{equation}
+On a shape configuration with $N_m\ge\kappa n$, the number of shape-$m$
+variables exceeding $t_n-x$ is binomial with mean at least
+$A_b e^x$ for $0\le x\le t_n/2$; this follows from the highest term in
+\eqref{eq:gammatail} and $t_n\sim\log n$.
+For $X\sim\operatorname{Bin}(N,q)$,
+\[
+ \Pbb(X<j)\le e^{j-1}\Ebb e^{-X}
+       \le \exp\{j-1-(1-e^{-1})Nq\}.
+\]
+Consequently, uniformly over these shape configurations,
+\begin{equation}\label{eq:left}
+ \Pbb(Z_{j,n}<-x\mid(r_i))\le
+ \begin{cases}
+ \exp\{j-1-A'_b e^x\},&0\le x\le t_n/2,\\
+ \exp\{j-1-A'_b e^{t_n/2}\},&t_n/2<x\le t_n,\\
+ 0,&x>t_n.
+ \end{cases}
+\end{equation}
+For the middle interval, use monotonicity and the estimate at $t_n/2$.
+The contribution of that interval to every fixed tail integral vanishes;
+indeed $t_n^p\exp(-A'_b e^{t_n/2})\to0$.
+The first and right tails give uniform integrability of every fixed power.
+On the exceptional shape event, negative parts are at most $t_n=O(\log n)$;
+positive parts have uniformly bounded conditional moments by
+\eqref{eq:right}. Its contribution therefore vanishes.
+Weak convergence and these bounds give the stated moments, using a higher
+moment and H\"older's inequality for mixed polynomials.
+\end{proof}
+
+\section{Passage to the interacting process}
+Let $T_{i,n}$ be type $i$'s Poissonized completion time, and let
+$T_{1,n}^{\downarrow}>\cdots>T_{n,n}^{\downarrow}$ be their decreasing order.
+Fix a sufficiently large but finite $b$, and put
+\[
+ \delta_b=2v_c(b),\qquad
+ A_{n,b}=\{L_c(b)\le\delta_b n,\ L_0(b)\ge v_0(b)n/2\}.
+\]
+Choose $b$ so that $\delta_b\le\min\{1/2,1/(2C)\}$.
+Lemma~\ref{lem:fluid} implies
+\begin{equation}\label{eq:good}
+ \Pbb(A_{n,b}^c)\le A_b e^{-a_b n},\qquad
+ L_0(b)/n\longrightarrow v_0(b)>0.
+\end{equation}
+Given $\Fcal_b$, construct the gamma variables of Lemma~\ref{lem:clock} for
+all unfinished types, even on $A_{n,b}^c$ (the small-error bound is asserted
+only on $A_{n,b}$). Give a completed type the ideal time $b$, and an
+unfinished type the ideal time $\widehat T_{i,n}=b+G_i$.
+Let $\widehat T_{j,n}^{\downarrow}$ denote their decreasing order.
+
+The number of shape-$m$ variables is exactly $L_0(b)$. By
+Lemma~\ref{lem:gamma}, the ideal point process and its largest $r$ points
+have the stated limits with
+\begin{equation}\label{eq:lambdab}
+ \lambda_b=\frac{e^b v_0(b)}{c!}\longrightarrow\lambda,
+\end{equation}
+including all moments. On $A_{n,b}$ and for all sufficiently large $n$ there
+are at least $r$ unfinished types. All their actual and ideal times exceed
+$b$, while all completed types have actual times at most $b$.
+The coordinatewise comparison \eqref{eq:clockcoupling} therefore gives
+\begin{equation}\label{eq:sorterror}
+ \max_{1\le j\le r}|T_{j,n}^{\downarrow}
+                 -\widehat T_{j,n}^{\downarrow}|\le\Delta
+       \quad\text{on }A_{n,b}.
+\end{equation}
+On its complement, each actual order statistic is bounded by $T_n$, and
+each ideal one by $b+\max_{i\le n}\operatorname{Gamma}(m,1)$ under an
+appropriate conditional coupling. These variables have $2p$th moments
+$O_b((\log n)^{2p})$ by Lemma~\ref{lem:coarse} and
+\eqref{eq:gammatail}. Cauchy--Schwarz and \eqref{eq:good} show that their
+contribution on $A_{n,b}^c$ to a $p$th moment tends to zero.
+Combining this fact with \eqref{eq:clockmoment} proves
+\begin{equation}\label{eq:Lpapprox}
+ \limsup_{n\to\infty}
+ \norm{\max_{1\le j\le r}|T_{j,n}^{\downarrow}
+                 -\widehat T_{j,n}^{\downarrow}|}_p
+ \le C_{m,d,p}\delta_b\longrightarrow0\qquad(b\to\infty).
+\end{equation}
+
+For clarity, this gives both weak and moment convergence without assuming
+uniform integrability of a quantity known only to be small in probability.
+For a bounded Lipschitz function of the largest $r$ points, its expectations
+for the two vectors differ by at most a constant times the $p=1$ bound in
+\eqref{eq:Lpapprox}. Take $n\to\infty$, then $b\to\infty$, using
+\eqref{eq:lambdab}. This proves joint weak convergence. For any fixed power,
+choose one larger exponent in \eqref{eq:Lpapprox} and use the ideal moment
+convergence. Alternatively, the inequality
+\[
+ |\norm{x}^p-\norm{y}^p|
+ \le p\norm{x-y}(\norm{x}+\norm{y})^{p-1}\quad(p\ge1)
+\]
+and H\"older's inequality give the moment comparison directly. The limiting
+ideal norms stay bounded as $b\to\infty$, since $\log\lambda_b\to\log\lambda$.
+Mixed polynomials follow by the same argument; powers between zero and one
+follow from a higher moment.
+
+To also obtain the point process, fix a compact interval $I$ and a
+continuous test function supported in $I$. On $\{\Delta\le\varepsilon\}$,
+all actual or ideal points that can contribute lie among the ideal points
+in the $\varepsilon$-enlargement of $I$, and each contributing pair is at
+distance at most $\varepsilon$. Completed-before-$b$ points are outside $I$
+for large $n$. The ideal counts in the enlargement are tight, by
+Lemma~\ref{lem:gamma}. Markov's inequality and \eqref{eq:clockmoment} give
+\[
+ \limsup_n\Pbb(A_{n,b}\cap\{\Delta>\varepsilon\})
+ \le C\delta_b/\varepsilon.
+\]
+First choose small $\varepsilon$, then large fixed $b$ with
+$\delta_b/\varepsilon$ small, and finally let $n\to\infty$.
+Uniform continuity of the test function proves convergence of Laplace
+functionals to those of intensity $\lambda e^{-y}\dd y$.
+This proves the Poissonized version of \eqref{eq:ppp}.
+
+\section{De-Poissonization and evaluation of the limits}
+Take the actual discrete trial sequence independently of rate-one
+exponential interarrival variables $U_1,U_2,\ldots$. Poissonization means
+\[
+ T_{i,n}=\frac\mu n\sum_{k=1}^{C_{i,n}}U_k.
+\]
+Conditional on $D_{1,n}=N$, the centered partial sums of the $U_k$ are a
+martingale. For any integer $q\ge1$, the elementary moment expansion of
+independent centered summands, followed by Doob's $L^{2q}$ inequality, gives
+\[
+ \Ebb\max_{k\le N}\left|\sum_{\ell=1}^k(U_\ell-1)\right|^{2q}
+ \le C_q N^q\quad(N\ge1).
+\]
+In the expansion, any nonzero term has no singleton index, so at most $q$
+distinct indices occur; their moments are finite. This proves the terminal
+moment bound used by Doob. Independence of the trial sequence and the clocks,
+and \eqref{eq:coarse}, now imply
+\begin{equation}\label{eq:depois}
+ \Ebb\max_{k\le D_{1,n}}
+ \left|\frac\mu n\sum_{\ell=1}^k(U_\ell-1)\right|^{2q}
+ =O\bigl((\log n/n)^q\bigr)\longrightarrow0.
+\end{equation}
+Every completion time through the last one is changed by at most this
+maximum. Thus the joint laws and moments pass to discrete time. Compactly
+supported point-process tests pass by the same tight-count and
+uniform-continuity argument used above.
+
+The gamma integral gives
+$\Ebb\log S_j=\psi(j)$ and $\Var(\log S_j)=\psi_1(j)$.
+For $j<k$, the beta--gamma change of variables shows that $S_j/S_k$ is
+independent of $S_k$. Hence
+$\Cov(\log S_j,\log S_k)=\Var(\log S_k)=\psi_1(k)$,
+which proves \eqref{eq:mean}--\eqref{eq:cov}.
+For the spacings, the joint density of
+$0<s_1<\cdots<s_r$ is $e^{-s_r}$. Changing variables to
+$u_j=s_j/s_{j+1}$, $1\le j<r$, and $s_r$ gives the product density of
+independent $u_j\sim\operatorname{Beta}(j,1)$ and
+$s_r\sim\operatorname{Gamma}(r,1)$. Therefore $-\log u_j$ are independent
+exponentials of rates $j$. This completes the proof of
+Theorem~\ref{thm:main}.
+
+To verify Corollary~\ref{cor:xt}, for $J\equiv g$ substitute $t=1-x$ in
+\eqref{eq:constants}:
+\[
+ \log a_g=\int_0^1\left(\frac g{1-t^g}-\frac1{1-t}\right)\dd t.
+\]
+With an upper cutoff $1-\varepsilon$, set $z=t^g$ in the first integral and
+separate $z^{1/g-1}-1$. The singular pieces give
+$-\log(1-(1-\varepsilon)^g)+\log\varepsilon\to-\log g$.
+The remaining integral is $-\psi(1/g)-\gamma$ by the digamma integral
+\cite[\S5.9.16]{DLMF}. The displayed special values follow from the same
+integral, or the standard digamma values in \cite[\S5.4]{DLMF}.
+
+\section{Further consequences and scope}
+\begin{corollary}[A finite sparse-state mean bound]\label{cor:finite}
+Start from any deterministic state with $K$ unfinished types, residual quotas
+$r_1,\ldots,r_K\le m$, and $K/n\le\min\{1/2,1/(2C)\}$, $n\ge2d$.
+Write $D_{\rm rem}$ for its remaining number of trials and
+\[
+ H(r_1,\ldots,r_K)=\int_0^\infty
+   \left[1-\prod_{i=1}^K(1-Q_{r_i}(t))\right]\dd t,
+\]
+where $Q_r$ is given by \eqref{eq:gammatail}. Then
+\[
+ 0\le\Ebb D_{\rm rem}-\frac n\mu H(r_1,\ldots,r_K)
+ \le\frac{2C}{\mu}\sum_{i=1}^K r_i.
+\]
+For $K=0$ all terms vanish.
+\end{corollary}
+\begin{proof}
+The integral is the mean maximum of the independent residual gamma clocks.
+Taking maxima and expectations in \eqref{eq:clockcoupling} bounds the
+continuous residual mean between $H$ and
+$H+(2C/n)\sum_i r_i$. Independent exponential trial intervals give
+$\Ebb T_{\rm rem}=(\mu/n)\Ebb D_{\rm rem}$; finiteness follows from
+Lemma~\ref{lem:coarse}. Rescaling proves the claim.
+\end{proof}
+
+This bound can close a truncated finite-state computation with a certified
+additive error. It does not reduce the state count of the exact histogram
+dynamic program of Xu and Tang~\cite{XuTang}. For small parameters, that
+recursion remains an exact way to compute the mean and, by a second-moment
+recursion, the variance.
+
+\begin{corollary}[The number still unfinished]\label{cor:counts}
+At trial $\lfloor(n/\mu)(B_n+y)\rfloor$, the number of types with fewer
+than $m$ copies converges in distribution to
+$\operatorname{Poisson}(\lambda e^{-y})$.
+For fixed $j$,
+\[
+ \Pbb(\mu D_{j,n}/n-B_n\le y)\longrightarrow
+ e^{-\lambda e^{-y}}\sum_{k=0}^{j-1}\frac{(\lambda e^{-y})^k}{k!}.
+\]
+\end{corollary}
+\begin{proof}
+Vague convergence alone would not control an unbounded interval.
+Instead, truncate the interval $(y,\infty)$ at $M$. The probability that a
+point lies above $M$ is the upper tail of the largest point; convergence of
+that maximum makes its limiting upper bound tend to zero as $M\to\infty$.
+The Poisson limit has no atom at $y$ or $M$. Apply the bounded-interval
+point-process limit, then remove the truncation. The displayed formula is
+the probability that this Poisson count is at most $j-1$.
+The rounding error is at most $\mu/n$ and does not affect these limits.
+\end{proof}
+
+\begin{corollary}[Additional independent holding]\label{cor:holding}
+Activate each trial independently with probability $p_n\in(0,1]$, performing
+one trial of the model above only on activation. Allow $p_n$ to tend to zero.
+If $D^{(p)}_{j,n}$ and $C^{(p)}_{i,n}$ count total trials, every assertion
+above holds with $\mu D_{j,n}/n$ and $\mu C_{i,n}/n$ replaced by
+$p_n\mu D^{(p)}_{j,n}/n$ and $p_n\mu C^{(p)}_{i,n}/n$.
+\end{corollary}
+\begin{proof}
+Let $V_\ell$ be independent geometric variables with success probability
+$p_n$ and support $\{1,2,\ldots\}$, independent of the active trial sequence.
+Then $D^{(p)}_{j,n}=\sum_{\ell=1}^{D_{j,n}}V_\ell$ and similarly for each
+type. The variables $p_nV_\ell-1$ are centered and their absolute moments
+of every fixed order are bounded uniformly in $p_n$: for example
+$\Pbb(p_nV_\ell>x)\le e^{1-x}$ for $x\ge0$.
+The same moment expansion and maximal inequality as in
+\eqref{eq:depois} show that the uniform scaled clock error tends to zero in
+every fixed $L^p$. Transfer all conclusions as before.
+\end{proof}
+
+The proofs require fixed $m$ and fixed bounded positive-mean batch law.
+They do not establish growing-$m$ or growing-batch regimes, nonuniform type
+weights, a central limit theorem for the moving histogram, or a quantitative
+rate for the final Gumbel approximation. A fixed-time concentration theorem
+and the integrated clock comparison suffice for the completion results;
+no moving-tail normal approximation is asserted or required.
+
+\begin{thebibliography}{9}
+\bibitem{XuTang}
+W. Xu and A. K. Tang,
+A generalized coupon collector problem,
+\emph{Journal of Applied Probability} \textbf{48} (2011), 1081--1094.
+\href{https://doi.org/10.1239/jap/1324046020}{doi:10.1239/jap/1324046020}.
+
+\bibitem{ErdosRenyi}
+P. Erd\H{o}s and A. R\'enyi,
+On a classical problem of probability theory,
+\emph{Magyar Tud. Akad. Mat. Kutat\'o Int. K\"ozl.} \textbf{6} (1961), 215--220.
+\href{https://static.renyi.hu/renyi_cikkek/1961_on_a_classical_problem_of_probability_theory.pdf}{Author archive}.
+
+\bibitem{DoumasSpektor}
+A. V. Doumas and S. Spektor,
+Two Multi--Draw Coupon Collector models with different retention rules,
+preprint (2026).
+\href{https://arxiv.org/abs/2607.01463}{arXiv:2607.01463}.
+
+\bibitem{Ilienko}
+A. Ilienko,
+Convergence of point processes associated with coupon collector's and
+Dixie cup problems,
+\emph{Electronic Communications in Probability} \textbf{24} (2019), paper 51.
+\href{https://doi.org/10.1214/19-ECP263}{doi:10.1214/19-ECP263}.
+
+\bibitem{SchillingHenze}
+J. Schilling and N. Henze,
+Two Poisson limit theorems for the coupon collector's problem with group drawings,
+\emph{Journal of Applied Probability} \textbf{58} (2021), 966--977.
+\href{https://doi.org/10.1017/jpr.2021.15}{doi:10.1017/jpr.2021.15}.
+
+\bibitem{Gast}
+N. Gast,
+Computing hitting times via fluid approximation: application to the coupon
+collector problem, preprint (2011).
+\href{https://arxiv.org/abs/1107.3385}{arXiv:1107.3385}.
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions,
+\href{https://dlmf.nist.gov/5.9}{\S5.9, Integral Representations}, and
+\href{https://dlmf.nist.gov/5.4}{\S5.4, Special Values and Extrema}.
+\end{thebibliography}
+\end{document}

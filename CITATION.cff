@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "Please cite the manuscript using its title and author."
+title: "Extremes and Moments in Greedy Coupon Collection"
+authors:
+  - family-names: Long
+    given-names: Christopher D.
+repository-code: "https://github.com/long-mathematics/xu-tang-coupon-collector"
+url: "https://github.com/long-mathematics/xu-tang-coupon-collector"
+keywords:
+  - coupon collector
+  - greedy allocation
+  - Gumbel distribution
+  - Poisson point process
+  - gamma clocks
+  - moment convergence
+preferred-citation:
+  type: unpublished
+  title: "Extremes and Moments in Greedy Coupon Collection"
+  authors:
+    - family-names: Long
+      given-names: Christopher D.
+  year: 2026
+  url: "https://github.com/long-mathematics/xu-tang-coupon-collector"

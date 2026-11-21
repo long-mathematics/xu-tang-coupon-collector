@@ -1,0 +1,199 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Xu--Tang Proof Audit},pdfauthor={Christopher D. Long}}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Pbb}{\mathbb P}
+\newcommand{\Ebb}{\mathbb E}
+\title{Xu--Tang Proof Audit}
+\author{Christopher D. Long}
+\date{}
+\begin{document}
+\maketitle
+\begin{abstract}
+This note explains why the earlier moving-tail and terminal-cloud proof
+assemblies were replaced by a fixed-time fluid limit and a simultaneous
+gamma-clock comparison. It distinguishes proof gaps from false conclusions
+and repairs a reusable martingale inequality. The companion paper,
+\emph{Extremes and Moments in Greedy Coupon Collection}, contains the complete
+replacement proof for the fixed-parameter completion results. The old
+moving-tail fluctuation program is not an input to that proof.
+\end{abstract}
+
+\section{Scope and lineage}
+The local moving-tail synthesis explicitly retained a common-interval
+martingale hypothesis. The local terminal-cloud synthesis claimed an
+unconditional completion law but retained a uniform-integrability hypothesis
+for the sharp mean. Their four component proofs were substantially duplicated.
+Earlier research discussions described later revisions: an integrating-factor
+envelope proof, localized martingale control, and a hybrid lower-layer
+remainder. Those discussions establish development history, not the validity
+of unavailable source proofs. The findings below concern the inspected local
+files; they do not assert that every later revision retained the same errors.
+
+The new paper supersedes both proof assemblies. It retains their exact
+histogram drift, deterministic amplitude, and target completion law, and
+supplies a new proof with stronger conclusions. The original local files are
+preserved outside this repository, with fingerprints in the audit records.
+The public sources use descriptive names, author attribution, no dynamic date
+or submission contact block, and one canonical proof chain. The broader
+terminal-defect framework remains a separate manuscript.
+
+\section{Intervals, stopping rules, and quantifiers}
+Write $c=m-1$, $H_t=gt/n$, and
+\[
+ A_j(t)=ne^{-H_t}(1+H_t)^j,\qquad W_j(t)=\sqrt{A_j(t)\log n}+1.
+\]
+The fixed-output martingale component controls row $j$ only to
+\[
+ T^-_{j,n}=\frac ng\{\log n+(j-1)\log\log n+B-\omega_n\}+O(1).
+\]
+The all-row bootstrap needs every row $j\le c$ controlled to $T^-_{c,n}$.
+For $j<c$ these intervals differ. An estimate on the shorter interval is
+not a proof on the longer one. Likewise, stopping when any row exits an
+envelope differs from stopping only at the top-row exit. Variance estimates
+must be justified for the stopping rule actually used. Later discussions
+identified this and proposed a localized replacement.
+
+Also $X_n=O_{\Pbb}(1)$ means that for every $\varepsilon>0$ there is a
+finite $C_\varepsilon$ with
+$\limsup_n\Pbb(|X_n|>C_\varepsilon)\le\varepsilon$.
+It does not imply one finite $C$ with $\Pbb(|X_n|\le C)\to1$.
+A bootstrap can retain the former quantifiers, choosing its height after
+$\varepsilon$, or establish a stronger launch estimate. The replacement
+paper uses an explicit exponentially small failure probability at fixed time.
+
+A sign convention also needs repair. If
+$D_j(t+1)=\mathbf1\{L_j(t+1)=L_j(t)-1\}$ and $\xi_j=D_j-p_j$,
+the noise in the recursion for $L_j$ is $-\xi_j$. Alternatively define
+$\zeta_j=p_j-D_j$ and use a plus sign. Absolute-value estimates survive,
+but representation identities must use the same convention throughout.
+
+\section{What the envelope does not prove}
+The component envelope has a cushion:
+\[
+ L_j(t)\le C\{ne^{-H_t}(1+H_t)^{j+\delta}+\log n\},\qquad\delta>0.
+\]
+Omitting $(1+H_t)^\delta$ strengthens it without proof. Earlier revisions
+explicitly repaired this mismatch.
+
+Even an uncushioned density-scale envelope is too coarse to directly control
+the centered quadratic remainder at the square-root scale. For $c=1$,
+$g\ge2$, and $H_{\tau_n}=\eta\log n+O(1/n)$, $0<\eta<1/9$,
+it permits $|Z_0(s)|$ of order $n^{1-\eta}$ on
+$s=\tau_n+O(n)$. A diagonal propagator has order one there. The resulting
+available quadratic bound in the top equation can be of size
+\[
+ \frac1{n^2}\sum_{s=\tau_n}^{\tau_n+\Theta(n)}
+ \Gamma_{11}(s+1,t)Z_0(s)^2\asymp n^{1-2\eta}.
+\]
+Since $W_1(t)\asymp n^{(1-\eta)/2}\log n$, its ratio to the target scale is
+\[
+ n^{(1-3\eta)/2}/\log n\longrightarrow\infty.
+\]
+This invalidates an inference from the envelope; it does not disprove the
+actual fluctuation theorem. The later hybrid proposal was intended to add
+the missing early control of centered lower layers. The replacement proof
+needs no nonlinear convolution estimate.
+
+The original upper-envelope crossing proof has a separate issue. Its exponent
+has the form
+\[
+ \frac{(R/4+S)^2}{C(V+R+S)},\qquad R=A\log n,
+\]
+with drift surplus approximately $S\asymp V/H$ and $H\asymp\log n$.
+The allowed scale $V\asymp RH$, $S\asymp R$ yields order $R/H=O(A)$,
+not $A\log n$. Chopping into subexcursions does not automatically renew the
+buffer. A valid integrating-factor or renewed-buffer argument is needed.
+Later discussions report an integrating-factor repair; the new paper uses
+neither version of this envelope lemma.
+
+\section{Probability convergence does not control moments}
+A lower-layer survivor count that is $o_{\Pbb}(1)$ need not have vanishing
+factorial moments. For example,
+\[
+ X_n=n\text{ with probability }n^{-2},\qquad X_n=0\text{ otherwise}
+\]
+converges in probability to zero, while
+$\Ebb[X_n(X_n-1)]\to1$. Likewise, conditional factorial-moment estimates
+on events of probability $1-o(1)$ need not give unconditional moment
+convergence: exceptional events may carry the moments.
+
+Bounded conditional generating functions or Laplace tests are enough for
+weak convergence. Moment conclusions require actual tail or $L^p$ control.
+The new proof supplies both: independent-gamma Laplace functionals, explicit
+extreme-value tail bounds, and an $L^p$ clock error. Exponentially unlikely
+fixed-time failures are handled with coarse global moments.
+
+A bounded next factorial moment can justify uniform integrability under
+conditional laws, when that bound holds in the required conditional sense.
+It does not by itself control the complement of the good event.
+
+The base case $c=0$ also needs consistent entrance bookkeeping. An entrance
+at $H_s=\log n+y-\omega_n$ leaves a window $\omega_n$ and mass of order
+$e^{\omega_n}$. An entrance using the common $(c-1)\log\log n$ formula
+leaves an extra $\log\log n$ window and a mass of order
+$e^{\omega_n}\log n$. Either convention works if used consistently.
+The gamma proof handles $m=1$ directly.
+
+Finally, $\{0\}$ is not a continuity set for a Poisson law on $\mathbb R$.
+For integer-valued variables use $(-1/2,1/2)$ to extract the zero mass from
+weak convergence, or work explicitly in the discrete topology.
+
+\section{Predictable-variance truncation repaired}
+Stopping a discrete martingale at the first time $V_t>b$ includes a possible
+variance overshoot. It does not ensure a stopped bracket at most $b$.
+The following predictable truncation repairs the launch component's argument.
+
+\begin{lemma}\label{lem:variance}
+Let $(M_t,\mathcal F_t)_{t=0}^N$ be a square-integrable martingale, $M_0=0$,
+and let
+\[
+ V_t=\sum_{s=1}^t\Ebb[(M_s-M_{s-1})^2\mid\mathcal F_{s-1}].
+\]
+For $a,b>0$, $\Pbb(|M_N|>a)\le\Pbb(V_N>b)+b/a^2$.
+\end{lemma}
+\begin{proof}
+Since $V_t$ is $\mathcal F_{t-1}$-measurable,
+\[
+ \widetilde M_N=\sum_{t=1}^N(M_t-M_{t-1})\mathbf1_{\{V_t\le b\}}
+\]
+is a martingale transform. Its bracket is
+\[
+ \sum_{t=1}^N\mathbf1_{\{V_t\le b\}}(V_t-V_{t-1})\le b,
+\]
+because $V_t$ is nondecreasing. Hence $\Ebb\widetilde M_N^2\le b$.
+On $\{V_N\le b\}$, $\widetilde M_N=M_N$. Chebyshev's inequality and a
+split over this event give the result. The overshooting increment is excluded.
+\end{proof}
+
+\section{Replacement proof and status}
+The replacement dependencies are
+\[
+\begin{gathered}
+ \text{exact class rates and fixed-time concentration}\\
+ \Downarrow\\
+ \text{sparse population and base-layer amplitude}\\
+ \Downarrow\\
+ \text{independent gamma clocks with a simultaneous }L^p\text{ error}\\
+ \Downarrow\\
+ \text{Poisson completion points, extreme laws, all fixed moments}\\
+ \Downarrow\\
+ \text{discrete-time results by independent clock comparison.}
+\end{gathered}
+\]
+This proves the fixed-$m$, fixed-batch completion law, its sharp mean and
+variance, and joint late order statistics. It extends to bounded random
+batch laws, replacement sampling, and independent holding. The deterministic
+layer asymptotics remain, with a short triangular ODE proof. A finite
+sparse-state mean bound also gives a certified approximation for computation.
+
+The separate all-layer moving-tail fluctuation estimate is neither assumed
+nor claimed. A logarithmically buffered square-root bound is not a normal
+limit theorem. Growing parameters and nonuniform offers remain further
+directions. This is an analytical and computational audit, not a
+proof-assistant verification or an independent referee report.
+\end{document}

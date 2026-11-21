@@ -1,0 +1,17 @@
+[
+  {
+    "source": "xutang/xutang_moving_tail_clt_synthesis_lamport_final.tex",
+    "bytes": 109341,
+    "sha256": "d4c3168c4991d2f201bb2460c42e456dab220afdf7644293e45616e6e03a2bbb"
+  },
+  {
+    "source": "xutang/xutang_terminal_cloud_synthesis_lamport_complete.tex",
+    "bytes": 121337,
+    "sha256": "0486d6608555cf14c91253baf8543b40ac4da635f551e28406e92fae405c91ea"
+  },
+  {
+    "source": "terminal_defect_calculus_xutang_clt_stability_program.tex",
+    "bytes": 55065,
+    "sha256": "b1ee10557772d92ef78ca8c7687d8520d5abf5741fd8956ad417d2c45e495af7"
+  }
+]
