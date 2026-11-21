@@ -20,7 +20,8 @@ gamma-clock comparison. It distinguishes proof gaps from false conclusions
 and repairs a reusable martingale inequality. The companion paper,
 \emph{Extremes and Moments in Greedy Coupon Collection}, contains the complete
 replacement proof for the fixed-parameter completion results. The old
-moving-tail fluctuation program is not an input to that proof.
+moving-tail fluctuation program is not an input to that proof. A final
+section records a second, adversarial review of the replacement itself.
 \end{abstract}
 
 \section{Scope and lineage}
@@ -196,4 +197,124 @@ nor claimed. A logarithmically buffered square-root bound is not a normal
 limit theorem. Growing parameters and nonuniform offers remain further
 directions. This is an analytical and computational audit, not a
 proof-assistant verification or an independent referee report.
+
+\section{Adversarial review of the replacement proof}
+The initial public replacement was reviewed afresh, with particular attention
+to the clock coupling and the moment transfer. No counterexample to the
+stated fixed-parameter completion theorem was found. The review did identify
+proof interfaces that needed to be written out, and an overbroad description
+of the holding extension. The revised paper makes the following repairs.
+This is a second-pass analytical audit by the same assistant, with independent
+finite enumeration checks; it is not a separate referee's assessment.
+
+\paragraph{A construction on all starting states.}
+The original clock lemma stated the sparse case, but its gamma variables
+were later used on the nonsparse exceptional event too. The revised proof
+first constructs the chain on every starting state from fresh independent
+exponential thresholds. Between jumps, each internal time advances at its
+current per-type rate. The next jump occurs at the first reached threshold.
+Memorylessness gives the required transition law. The total rate is
+$F_n(K)>0$ before completion and exactly $s=\sum_i r_i$ state changes remain,
+so completion is finite without assuming a positive rate for each individual
+type at every moment.
+
+The terminal internal thresholds $G_i$ are independent gamma variables
+conditional on the full history at the fixed entrance time. Actual residual
+times $R_i$ are dependent. Conditioning on a future event such as a small
+clock error need not preserve independence of the $G_i$; the proof does not
+do so. Symmetric ties supply the labelled construction, and histogram
+invariance supplies the unlabelled results for other allowed tie rules.
+
+\paragraph{The pathwise bound and its domain.}
+In the sparse state, $1/2\le q_i\le1$ until completion. The exact identity
+and integrated population calculation are
+\[
+ R_i-G_i=\int_b^{b+R_i}(1-q_i(h))\,\mathrm dh,
+ \qquad \int_b^\infty K(h)\,\mathrm dh=\sum_i R_i.
+\]
+They imply
+\[
+ 0\le R_i-G_i\le\Delta:=\frac Cn\sum_i R_i
+ \le\frac{2C}{n}\sum_i G_i.
+\]
+This is a pathwise statement; it does not require independence between a
+rate and its driving clock. Conditional gamma additivity now gives the
+explicit bound
+\[
+ \Ebb[\Delta^p\mid\mathcal F_b]
+ \le (2C/n)^p\frac{\Gamma(s+p)}{\Gamma(s)}.
+\]
+Minkowski also bounds its $p$th root by a constant times $K/n$, uniformly
+over entrance states and times. Sparsity is essential for $R_i\le2G_i$.
+For example, with four types, batch size two, and loads $(1,0,0,0)$, the
+first type has rate zero until some other type advances. A sufficiently
+small first internal threshold can therefore give $R_1>2G_1$. Here
+$n\ge2d$ holds but the sparsity assumption fails. The finite checks include
+this negative control.
+
+\paragraph{Centered moments and exceptional events.}
+Let $X_n$ be the centered vector of actual late completions and $Y_{n,b}$
+its centered gamma approximation. The revised proof defines these vectors
+explicitly and bounds the bad-entrance contribution by
+\[
+ \Ebb[E_{n,b}^p\mathbf1_{A_{n,b}^c}]
+ \le\bigl(\Ebb(T_n+b+\max_iG_i)^{2p}\bigr)^{1/2}
+      \Pbb(A_{n,b}^c)^{1/2}
+ =O_b((\log n)^p e^{-a_bn/2}),
+\]
+where $E_{n,b}$ is the maximum order-statistic discrepancy. This uses
+unconditional coarse moments and Cauchy--Schwarz, not independence from the
+exceptional event. The gamma upper tail is stated uniformly conditional on
+every shape configuration, so its positive moments on bad configurations
+are also controlled. The negative part on such configurations is at most
+$O(\log n)$.
+
+After establishing weak convergence with $n\to\infty$ followed by
+$b\to\infty$, fix a single admissible $b_0$. The comparison and gamma moments
+give $\limsup_n\Ebb\lVert X_n\rVert_\infty^q<\infty$ for every finite
+$q\ge1$. Choosing $q>p$ proves uniform integrability of every requested
+$p$th power, and choosing $q$ above a polynomial's degree handles mixed
+moments. Thus moment convergence does not require uniform estimates at a
+growing entrance time.
+
+The exceptional-event hypothesis cannot simply be omitted. As a diagnostic
+at entrance time $b=0$, let all $n$ ideal shapes be zero with probability
+$1/\log n$, and let them
+all equal $m$ otherwise. The point-process limit is unchanged, but on the
+rare event the centered maximum is $-B_n$. Its $p$th absolute moment has a
+contribution $B_n^p/\log n$, which diverges for $p>1$. The actual model's
+exponential fixed-time concentration rules this example out.
+
+\paragraph{Point processes and holding.}
+Fixed-$b$ tightness alone leaves uniformity in the second limit implicit.
+The revised paper calculates the ideal count's expectation on an enlarged
+compact interval directly. The limiting expectation is
+$\lambda_b\int_{I^{+1}}e^{-y}\,\mathrm dy$, with bounded $\lambda_b$.
+This yields an explicit Laplace error bounded by a constant times
+$\delta_b/\varepsilon+\lambda_b\omega_\phi(\varepsilon)$, justifying the
+order $n\to\infty$, then $b\to\infty$, then $\varepsilon\downarrow0$.
+
+The holding corollary now names the conclusions and rescales each explicitly.
+Its finite mean error is divided by the activation probability $p_n$.
+The exact variance identity is
+\[
+ \operatorname{Var}(D^{(p)})=
+ \frac{\operatorname{Var}(D)+(1-p_n)\Ebb D}{p_n^2},
+\]
+so a literal finite-variance rescaling would be wrong, although the additional
+term vanishes on the theorem's asymptotic scale. The revision also restricts
+the deterministic profile statement to the layers actually defined and
+describes the exponential-martingale parameter as a valid choice, rather
+than an exact optimizer.
+
+\paragraph{Verification and remaining scope.}
+Direct batch enumeration, separate from the avoidance formula, supplies the
+generators for 960 exact rational clock paths, including extremely unequal
+thresholds. Twelve exact sparse-state means are compared with independent
+gamma maxima integrated by inclusion--exclusion. These checks and the
+existing finite identities pass. They test implementations and finite
+identities; independence and asymptotic moment convergence rest on the
+written arguments above. No unresolved gap was identified in the repaired
+fixed-parameter theorem. This judgment does not certify growing-parameter
+extensions or replace independent peer review.
 \end{document}
