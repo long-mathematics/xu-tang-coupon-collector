@@ -1,0 +1,3 @@
+PASS: 960 exact clock paths from directly enumerated batch generators, including extreme thresholds.
+PASS: 12 exact sparse-state mean bounds against independently integrated gamma maxima.
+PASS: dense-state counterexample rejects R_i <= 2 G_i without sparsity; the general clock construction still completes.

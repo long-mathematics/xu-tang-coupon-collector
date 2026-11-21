@@ -12,6 +12,7 @@ keep one least-collected type. The target is a fixed number of complete sets.
 - [Proof audit (PDF)](notes/xu_tang_proof_audit.pdf)
 - [Audit record](audit/AUDIT.md), [literature review](audit/REFERENCES.md),
   and [further directions](audit/FURTHER_DIRECTIONS.md)
+- [Adversarial review of the replacement proof](audit/ADVERSARIAL_REVIEW.md)
 
 ## Main result
 
@@ -58,6 +59,14 @@ fixed-parameter theorem. It has received an analytical and computational
 audit, not independent peer review or proof-assistant verification.
 No arXiv identifier is assigned to this manuscript here.
 
+A subsequent adversarial pass made the clock construction valid explicitly
+on all entrance states, separated centered moment bounds from weak
+convergence, and quantified the point-process transfer. It also clarified
+the holding corollary's scope. The review includes direct batch enumeration,
+exact clock paths and counterexamples to unjustified weakenings of the
+hypotheses. It is a second pass by the same assistant, not a separate
+referee's assessment.
+
 The one-copy greedy result is already covered by
 [Doumas and Spektor (2026)](https://arxiv.org/abs/2607.01463), and classical
 single-draw point-process results by
@@ -84,6 +93,9 @@ make check
 to check transition rates, the exact mean/variance recursion and clock
 bounds. It also checks explicit amplitude values and one-copy benchmarks.
 These checks supplement the proof; they do not prove an asymptotic theorem.
+The adversarial checks use directly enumerated batch generators to verify
+pathwise clock identities and exact sparse-state mean bounds, including a
+dense-state counterexample to dropping the sparsity assumption.
 `make check` rebuilds both PDFs, rejects unresolved references and overfull
 boxes, and compares their extracted text with the committed PDFs.
 

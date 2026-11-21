@@ -219,7 +219,7 @@ is nonincreasing and tends to zero, and
 \begin{proof}
 The polynomial vector field in \eqref{eq:ode} is Lipschitz on the compact
 ordered simplex $0\le v_0\le\cdots\le v_c\le1$ and points inward on its
-boundary. For example, at $v_j=v_{j-1}$ the derivative of their difference
+boundary. For $1\le j\le c$, at $v_j=v_{j-1}$ the derivative of their difference
 is $f(v_{j-1})-f(v_{j-2})\ge0$. Hence the solution exists globally in that
 simplex. Since $f$ is strictly increasing on $[0,1]$, each derivative is
 nonpositive. The limits of successive coordinates must agree: if
@@ -238,7 +238,7 @@ supermartingale and $e^z-1-z\le z^2/[2(1-|z|/3)]$ for $|z|<3$ give
 \]
 For completeness, apply the exponential supermartingale with parameter
 $\theta n$ up to the first crossing of $z$, bound its compensator by
-$n\theta^2b/[2\mu(1-\theta/3)]$, and optimize at
+$n\theta^2b/[2\mu(1-\theta/3)]$, and choose
 $\theta=z/(b/\mu+z/3)$; do the same for $-M_j$.
 Equation~\eqref{eq:fluidapprox}, a union bound over the $m$ coordinates,
 and Gronwall's inequality prove \eqref{eq:concentration}.
@@ -253,7 +253,7 @@ Taking the limit proves \eqref{eq:v0}.
 \end{proof}
 
 \begin{proposition}[All deterministic lower-tail profiles]\label{prop:profiles}
-For every fixed $j\ge0$, the solution of \eqref{eq:ode} satisfies
+For every $0\le j\le c$, the solution of \eqref{eq:ode} satisfies
 \[
  v_j(h)\sim a_\nu\frac{h^j}{j!}e^{-h}\qquad(h\to\infty).
 \]
@@ -278,8 +278,8 @@ The following is the main estimate. It concerns all remaining completion
 times, not merely their maximum, and supplies its own moment bounds.
 
 \begin{lemma}[Clock comparison]\label{lem:clock}
-Assume $n\ge2d$ and condition on the state at a deterministic time $b$.
-Suppose exactly $K$
+Use the symmetric tie rule fixed above, assume $n\ge2d$, and condition on
+the full history $\Fcal_b$ at a deterministic time $b$. Suppose exactly $K$
 types are unfinished and $K\le\delta n$, where
 $\delta\le\min\{1/2,1/(2C)\}$ and $C$ is from Lemma~\ref{lem:rates}.
 If type $i$ needs $r_i\in\{1,\ldots,m\}$ more copies, one can construct
@@ -294,23 +294,56 @@ For every fixed $p\ge1$,
  \bigl(\Ebb[\Delta^p\mid\Fcal_b]\bigr)^{1/p}
  \le C_{m,d,p}K/n.
 \end{equation}
+More explicitly, if $K>0$ and $s=\sum_i r_i$, then
+\begin{equation}\label{eq:clockexplicit}
+ \Ebb[\Delta^p\mid\Fcal_b]
+ \le\left(\frac{2C}{n}\right)^p\frac{\Gamma(s+p)}{\Gamma(s)}.
+\end{equation}
 For $K=0$, set $\Delta=0$.
 \end{lemma}
 \begin{proof}
-Starting at $b$, use independent unit-rate Poisson processes $Y_i$ for the
-unfinished types. When a type is in class $j$, run its internal clock at
-rate $q_j$. The random time change
-$Y_i(\int_b^{b+t}q_i(h)\dd h)$ constructs the desired finite-state Markov
-chain: its coordinate transition rates are exactly \eqref{eq:q}.
-After type $i$ finishes, set its virtual clock rate to one. The $r_i$th
-arrival time of $Y_i$ is $G_i$; these are independent gamma variables
-conditional on the starting state. Continuity of the internal clocks gives
+We first construct the coupling for \emph{every} starting state, without a
+sparsity assumption. On an extension of the conditional probability space,
+take independent rate-one exponential variables $E_{i,k}$, also independent
+of $\Fcal_b$, and put $P_{i,k}=\sum_{\ell=1}^k E_{i,\ell}$. These are the
+arrival thresholds of independent unit-rate Poisson processes.
+Start each internal time at zero. If type $i$ has made $a_i<r_i$ transitions
+since $b$, run its internal time at its current rate $q_i$ from \eqref{eq:q}.
+In a fixed state the next external waiting time is
 \[
- \int_b^{b+R_i}q_i(h)\dd h=G_i.
+ \min_{i:a_i<r_i,\ q_i>0}
+       \frac{P_{i,a_i+1}-A_i}{q_i},
 \]
-Let $K(h)=L_c(h)$. It is nonincreasing, and \eqref{eq:rates} gives
+where $A_i$ is its current accumulated internal time. Advance every active
+internal time by its rate times this waiting time, then increment the unique
+winning type. Completed types have rate zero and leave the construction.
+The filtration reveals the starting history and the observed jumps, not
+the entire future threshold array.
+
+The exponential memoryless property verifies the chain law inductively:
+conditional on the revealed jump history, unused internal residuals are
+independent rate-one exponentials. At each step, the winner has rate $q_i$,
+and the total jump rate is
+$\sum_{i\text{ unfinished}}q_i=F_n(K)>0$ when $K>0$.
+Ties have probability zero. There are exactly $\sum_i r_i$ remaining
+transitions, so completion occurs in finite time almost surely; no explosion
+or positive individual lower-rate assumption is needed for this construction.
+It has the same conditional law as the capped collection chain, since its
+coordinate transition rates agree. Null trials need not be represented in
+this state-changing chain.
+
+Now set $G_i=P_{i,r_i}$. Conditional on $\Fcal_b$, their shapes are fixed
+and the $G_i$ are independent $\operatorname{Gamma}(r_i,1)$ variables.
+Writing $q_i(h)$ for the predictable rate while type $i$ is unfinished,
+continuity of its accumulated internal time gives the exact identity
+\[
+ \int_b^{b+R_i}q_i(h)\dd h=G_i,\qquad
+ R_i-G_i=\int_b^{b+R_i}(1-q_i(h))\dd h.
+\]
+Only now use sparsity. Let $K(h)=L_c(h)$. It is nonincreasing, and
+\eqref{eq:rates} gives
 $1/2\le q_i(h)\le1$ while a type is unfinished. Consequently
-$G_i\le R_i\le2G_i$, so all completion times are finite. Define
+$G_i\le R_i\le2G_i$. Define
 \[
  \Delta=\frac Cn\int_b^\infty K(h)\dd h.
 \]
@@ -320,11 +353,14 @@ $R_i-G_i\le\Delta$. Moreover, by summing the unfinished indicators,
  \int_b^\infty K(h)\dd h=\sum_{i=1}^K R_i
  \le2\sum_{i=1}^K G_i.
 \]
-This proves \eqref{eq:clockcoupling}. Minkowski's inequality and
-$\norm{\operatorname{Gamma}(r,1)}_p\le
-\norm{\operatorname{Gamma}(m,1)}_p$ for $r\le m$ prove
-\eqref{eq:clockmoment}. Independence is used to identify the ideal clocks;
-the error estimate itself only needs their marginal moment bounds.
+This proves \eqref{eq:clockcoupling}. Conditional on $\Fcal_b$, the sum of
+the $G_i$ has law $\operatorname{Gamma}(s,1)$, proving
+\eqref{eq:clockexplicit}. Alternatively, Minkowski's inequality gives
+$\norm{\sum_i G_i}_{p\mid\Fcal_b}
+ \le K\norm{\operatorname{Gamma}(m,1)}_p$, proving \eqref{eq:clockmoment}
+with a constant independent of $b$, $n$, and the starting state.
+The actual $R_i$ need not be independent, nor are the $G_i$ independent
+after conditioning on future events of the coupled chain.
 \end{proof}
 
 \begin{remark}
@@ -417,10 +453,12 @@ unit-rate Poisson process on $(0,\infty)$, with successive points $S_j$.
 
 Here are explicit tail bounds for moments. Set $t_n=B_n-b$ and let $Z_{j,n}$
 be the $j$th largest of $b+G_i-B_n$. For large $n$ and $x\ge0$, a union bound
-and \eqref{eq:gammatail} give
+and \eqref{eq:gammatail} give, uniformly over \emph{every} shape configuration,
 \begin{equation}\label{eq:right}
- \Pbb(Z_{1,n}>x)\le C_b(1+x)^c e^{-x}.
+ \Pbb(Z_{1,n}>x\mid(r_i))\le C_b(1+x)^c e^{-x}.
 \end{equation}
+Indeed, $n e^{-t_n}=e^b/(\log n)^c$, and
+$(t_n+x)^c\le C_b(\log n)^c(1+x)^c$.
 On a shape configuration with $N_m\ge\kappa n$, the number of shape-$m$
 variables exceeding $t_n-x$ is binomial with mean at least
 $A_b e^x$ for $0\le x\le t_n/2$; this follows from the highest term in
@@ -445,7 +483,11 @@ indeed $t_n^p\exp(-A'_b e^{t_n/2})\to0$.
 The first and right tails give uniform integrability of every fixed power.
 On the exceptional shape event, negative parts are at most $t_n=O(\log n)$;
 positive parts have uniformly bounded conditional moments by
-\eqref{eq:right}. Its contribution therefore vanishes.
+\eqref{eq:right}. For every fixed $p>0$, that event's contribution to
+$\Ebb|Z_{j,n}|^p$ is at most
+$\{t_n^p+C_{b,p}\}O(e^{-an})$, which tends to zero. Applying these estimates
+with an exponent strictly larger than $p$ gives uniform integrability of
+$|Z_{j,n}|^p$, not just boundedness of its expectation.
 Weak convergence and these bounds give the stated moments, using a higher
 moment and H\"older's inequality for mixed polynomials.
 \end{proof}
@@ -464,9 +506,10 @@ Lemma~\ref{lem:fluid} implies
  \Pbb(A_{n,b}^c)\le A_b e^{-a_b n},\qquad
  L_0(b)/n\longrightarrow v_0(b)>0.
 \end{equation}
-Given $\Fcal_b$, construct the gamma variables of Lemma~\ref{lem:clock} for
-all unfinished types, even on $A_{n,b}^c$ (the small-error bound is asserted
-only on $A_{n,b}$). Give a completed type the ideal time $b$, and an
+Given $\Fcal_b$, use the construction in the proof of
+Lemma~\ref{lem:clock} for all unfinished types. That construction is valid
+on $A_{n,b}^c$ as well; only its small-error estimate requires $A_{n,b}$.
+Give a completed type the ideal time $b$, and an
 unfinished type the ideal time $\widehat T_{i,n}=b+G_i$.
 Let $\widehat T_{j,n}^{\downarrow}$ denote their decreasing order.
 
@@ -485,12 +528,19 @@ The coordinatewise comparison \eqref{eq:clockcoupling} therefore gives
                  -\widehat T_{j,n}^{\downarrow}|\le\Delta
        \quad\text{on }A_{n,b}.
 \end{equation}
-On its complement, each actual order statistic is bounded by $T_n$, and
-each ideal one by $b+\max_{i\le n}\operatorname{Gamma}(m,1)$ under an
-appropriate conditional coupling. These variables have $2p$th moments
-$O_b((\log n)^{2p})$ by Lemma~\ref{lem:coarse} and
-\eqref{eq:gammatail}. Cauchy--Schwarz and \eqref{eq:good} show that their
-contribution on $A_{n,b}^c$ to a $p$th moment tends to zero.
+Write $E_{n,b}=\max_{j\le r}|T_{j,n}^{\downarrow}
+-\widehat T_{j,n}^{\downarrow}|$. On the complement of $A_{n,b}$,
+$E_{n,b}\le T_n+b+\max_iG_i$. Conditional on any starting state, each
+$G_i$ is stochastically bounded by $\operatorname{Gamma}(m,1)$; a union
+bound for their maximum gives an unconditional $2p$th moment
+$O_b((\log n)^{2p})$. Lemma~\ref{lem:coarse} gives the same bound for $T_n$.
+Cauchy--Schwarz, which requires no independence from the bad event, gives
+\begin{equation}\label{eq:badmoment}
+ \Ebb[E_{n,b}^p\one_{A_{n,b}^c}]
+ \le \bigl(\Ebb(T_n+b+\max_iG_i)^{2p}\bigr)^{1/2}
+       \Pbb(A_{n,b}^c)^{1/2}
+ =O_b((\log n)^p e^{-a_b n/2})=o(1).
+\end{equation}
 Combining this fact with \eqref{eq:clockmoment} proves
 \begin{equation}\label{eq:Lpapprox}
  \limsup_{n\to\infty}
@@ -499,39 +549,74 @@ Combining this fact with \eqref{eq:clockmoment} proves
  \le C_{m,d,p}\delta_b\longrightarrow0\qquad(b\to\infty).
 \end{equation}
 
-For clarity, this gives both weak and moment convergence without assuming
-uniform integrability of a quantity known only to be small in probability.
-For a bounded Lipschitz function of the largest $r$ points, its expectations
-for the two vectors differ by at most a constant times the $p=1$ bound in
-\eqref{eq:Lpapprox}. Take $n\to\infty$, then $b\to\infty$, using
-\eqref{eq:lambdab}. This proves joint weak convergence. For any fixed power,
-choose one larger exponent in \eqref{eq:Lpapprox} and use the ideal moment
-convergence. Alternatively, the inequality
+Define the \emph{centered} vectors
 \[
- |\norm{x}^p-\norm{y}^p|
- \le p\norm{x-y}(\norm{x}+\norm{y})^{p-1}\quad(p\ge1)
+ X_n=(T_{j,n}^{\downarrow}-B_n)_{j=1}^r,\quad
+ Y_{n,b}=(\widehat T_{j,n}^{\downarrow}-B_n)_{j=1}^r,\quad
+ Z_b=(\log\lambda_b-\log S_j)_{j=1}^r.
 \]
-and H\"older's inequality give the moment comparison directly. The limiting
-ideal norms stay bounded as $b\to\infty$, since $\log\lambda_b\to\log\lambda$.
-Mixed polynomials follow by the same argument; powers between zero and one
-follow from a higher moment.
+For a bounded Lipschitz function of these vectors, its actual and ideal
+expectations differ in the limit superior by at most a constant times
+$\delta_b$, using the $p=1$ bound in \eqref{eq:Lpapprox}. For each fixed $b$,
+$Y_{n,b}\Rightarrow Z_b$; also $Z_b\Rightarrow
+Z=(\log\lambda-\log S_j)_{j=1}^r$ as $b\to\infty$.
+Taking $n\to\infty$ first and then $b\to\infty$ proves $X_n\Rightarrow Z$.
 
-To also obtain the point process, fix a compact interval $I$ and a
-continuous test function supported in $I$. On $\{\Delta\le\varepsilon\}$,
-all actual or ideal points that can contribute lie among the ideal points
-in the $\varepsilon$-enlargement of $I$, and each contributing pair is at
-distance at most $\varepsilon$. Completed-before-$b$ points are outside $I$
-for large $n$. The ideal counts in the enlargement are tight, by
-Lemma~\ref{lem:gamma}. Markov's inequality and \eqref{eq:clockmoment} give
+For moments there is a simpler argument that uses just \emph{one fixed}
+admissible entrance time $b_0$. For every finite $q\ge1$, the $L^q$
+triangle inequality, \eqref{eq:Lpapprox}, and the ideal moment convergence
+give
+\begin{equation}\label{eq:centeredmoments}
+ \limsup_{n\to\infty}
+       (\Ebb\norm{X_n}_\infty^q)^{1/q}
+ \le (\Ebb\norm{Z_{b_0}}_\infty^q)^{1/q}
+       +C_{m,d,q}\delta_{b_0}<\infty.
+\end{equation}
+No bound uniform in a growing $b$ is needed here. For any requested power
+$p>0$, choose $q>\max\{p,1\}$. The inequality
 \[
- \limsup_n\Pbb(A_{n,b}\cap\{\Delta>\varepsilon\})
- \le C\delta_b/\varepsilon.
+ \Ebb\bigl[\norm{X_n}_\infty^p
+         \one_{\{\norm{X_n}_\infty>R\}}\bigr]
+ \le R^{p-q}\Ebb\norm{X_n}_\infty^q
 \]
-First choose small $\varepsilon$, then large fixed $b$ with
-$\delta_b/\varepsilon$ small, and finally let $n\to\infty$.
-Uniform continuity of the test function proves convergence of Laplace
-functionals to those of intensity $\lambda e^{-y}\dd y$.
-This proves the Poissonized version of \eqref{eq:ppp}.
+proves uniform integrability, after discarding finitely many $n$.
+Truncation and weak convergence now give all absolute norm moments.
+For a polynomial of total degree $k$, use $q>\max\{k,1\}$ and the bound
+$|P(x)|\le C_P(1+\norm{x}_\infty^k)$ to obtain its expectation limit.
+This proves all mixed polynomial moments without inferring integrability
+from convergence in probability.
+
+For the point process, take a nonnegative continuous function $\phi$
+supported in a compact interval $I$. Let $I^{+1}$ be its enlargement by one,
+$M_I=\int_{I^{+1}}e^{-y}\dd y$, and $\omega_\phi(\varepsilon)$ the modulus
+of continuity on $\Rbb$, extending $\phi$ by zero. Write $\Xi_n^P$ for the
+actual centered Poissonized point measure and $\widehat\Xi_{n,b}$ for its
+ideal counterpart. The gamma density calculation, and boundedness of
+$L_0(b)/n$, give the first-moment limit
+\begin{equation}\label{eq:compactcount}
+ \Ebb\widehat\Xi_{n,b}(I^{+1})\longrightarrow\lambda_b M_I
+ \qquad\text{for each fixed }b.
+\end{equation}
+This is a direct calculation, not an inference of moments from weak
+point-process convergence. On $A_{n,b}\cap\{\Delta\le\varepsilon\}$,
+$0<\varepsilon\le1$, each pair of contributing points is within
+$\varepsilon$ and its ideal point lies in $I^{+1}$. Points completed before
+$b$ lie outside this interval for large $n$. Thus the difference of the
+two integrals of $\phi$ is at most
+$\omega_\phi(\varepsilon)\widehat\Xi_{n,b}(I^{+1})$.
+Since $|e^{-u}-e^{-v}|\le\min\{1,|u-v|\}$ for $u,v\ge0$,
+\eqref{eq:good}, Markov's inequality and \eqref{eq:clockmoment} yield
+\begin{equation}\label{eq:laplaceerror}
+ \limsup_n\left|\Ebb e^{-\langle\phi,\Xi_n^P\rangle}
+        -\Ebb e^{-\langle\phi,\widehat\Xi_{n,b}\rangle}\right|
+ \le C_{m,d,1}\delta_b/\varepsilon
+       +\lambda_b M_I\omega_\phi(\varepsilon).
+\end{equation}
+The sequence $\lambda_b$ is bounded and tends to $\lambda$. For fixed
+$\varepsilon$, send $b\to\infty$ in this bound and the ideal Laplace limit,
+then send $\varepsilon\downarrow0$. This proves \eqref{eq:ppp} in
+Poissonized time. The ideal Laplace functional was conditioned only on
+$\Fcal_b$, never on the future event $\{\Delta\le\varepsilon\}$.
 
 \section{De-Poissonization and evaluation of the limits}
 Take the actual discrete trial sequence independently of rate-one
@@ -589,7 +674,8 @@ integral, or the standard digamma values in \cite[\S5.4]{DLMF}.
 \section{Further consequences and scope}
 \begin{corollary}[A finite sparse-state mean bound]\label{cor:finite}
 Start from any deterministic state with $K$ unfinished types, residual quotas
-$r_1,\ldots,r_K\le m$, and $K/n\le\min\{1/2,1/(2C)\}$, $n\ge2d$.
+$r_1,\ldots,r_K\in\{1,\ldots,m\}$, and
+$K/n\le\min\{1/2,1/(2C)\}$, $n\ge2d$.
 Write $D_{\rm rem}$ for its remaining number of trials and
 \[
  H(r_1,\ldots,r_K)=\int_0^\infty
@@ -641,9 +727,16 @@ The rounding error is at most $\mu/n$ and does not affect these limits.
 \begin{corollary}[Additional independent holding]\label{cor:holding}
 Activate each trial independently with probability $p_n\in(0,1]$, performing
 one trial of the model above only on activation. Allow $p_n$ to tend to zero.
-If $D^{(p)}_{j,n}$ and $C^{(p)}_{i,n}$ count total trials, every assertion
-above holds with $\mu D_{j,n}/n$ and $\mu C_{i,n}/n$ replaced by
+If $D^{(p)}_{j,n}$ and $C^{(p)}_{i,n}$ count total trials, the limit and
+moment conclusions of Theorem~\ref{thm:main} hold with
+$\mu D_{j,n}/n$ and $\mu C_{i,n}/n$ replaced by
 $p_n\mu D^{(p)}_{j,n}/n$ and $p_n\mu C^{(p)}_{i,n}/n$.
+In particular the mean and covariance scales are $n/(p_n\mu)$ and its
+square, respectively. The unfinished-count limit of
+Corollary~\ref{cor:counts} holds at trial
+$\lfloor(n/(p_n\mu))(B_n+y)\rfloor$.
+The finite mean bound of Corollary~\ref{cor:finite} holds with both its
+comparison mean and its additive error divided by $p_n$.
 \end{corollary}
 \begin{proof}
 Let $V_\ell$ be independent geometric variables with success probability
@@ -655,6 +748,15 @@ $\Pbb(p_nV_\ell>x)\le e^{1-x}$ for $x\ge0$.
 The same moment expansion and maximal inequality as in
 \eqref{eq:depois} show that the uniform scaled clock error tends to zero in
 every fixed $L^p$. Transfer all conclusions as before.
+For the finite mean bound, conditioning on the active-trial count gives
+$\Ebb D^{(p)}_{\rm rem}=\Ebb D_{\rm rem}/p_n$ exactly.
+For comparison, finite variances are not simply divided by $p_n^2$:
+\[
+ \Var(D^{(p)}_{j,n})=
+ \frac{\Var(D_{j,n})+(1-p_n)\Ebb D_{j,n}}{p_n^2}.
+\]
+The additional term vanishes on the stated normalized variance scale by
+Lemma~\ref{lem:coarse}.
 \end{proof}
 
 The proofs require fixed $m$ and fixed bounded positive-mean batch law.

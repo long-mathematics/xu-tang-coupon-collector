@@ -2,6 +2,11 @@
 
 Review date: 2026-11-21.
 
+The subsequent [adversarial review](ADVERSARIAL_REVIEW.md) audits the new
+replacement proof itself. It records expanded clock construction and
+moment-transfer arguments, an explicit compact-count bound, and a clarified
+holding corollary. The companion audit PDF includes both review stages.
+
 ## Scope and provenance
 
 The inspected local sources were the moving-tail synthesis, the
@@ -100,6 +105,9 @@ formulas, exact finite differences and sparse rate bounds, and independent
 exact mean/variance calculations. It includes deterministic full-choice
 instances, holding identities, amplitude values and large one-copy
 benchmarks. The captured record is [verification.txt](verification.txt).
+The later adversarial suite adds 960 exact clock paths, 12 sparse-state mean
+comparisons and a dense-state negative control, recorded in
+[adversarial_verification.txt](adversarial_verification.txt).
 
 `make pdf` and `make check` build both documents, check labels and citations,
 reject unresolved LaTeX diagnostics and overfull boxes, scan source/PDF
